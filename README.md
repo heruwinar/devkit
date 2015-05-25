@@ -13,7 +13,8 @@ This repository is meant for development of the Development Kit itself.
 3. install the node packages ```npm install```
 4. install the bower packages ```cd www; bower install; cd ..```
 5. make a symbolic link (or copy) [devkit-core](https://github.com/printhom/devkit-core) so there's a folder `core` next to `package.json`, `app.js` etc.
-6. Download a pre-built nw.js binary from http://nwjs.io, and execute `nw .` if you're on OS X. On Windows, drag the devkit folder on the `nw.exe` binary.
+6. Run `grunt`
+7. Download a pre-built nw.js binary from http://nwjs.io, and execute `nw .` if you're on OS X. On Windows, drag the devkit folder on the `nw.exe` binary.
 
 ### Docs
 Please read them at [devkit-core](https://github.com/printhom/devkit-core).
