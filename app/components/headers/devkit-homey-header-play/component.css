@@ -59,7 +59,7 @@
 		transform: scale(0.9);
 		opacity: 0.85;
 	}
-	#header-play .wrap.playing .btn {
+	#header-play .wrap.active .btn {
 		border-top-width: 0;
 		border-bottom-width: 0;
 		border-left-width: 10px;

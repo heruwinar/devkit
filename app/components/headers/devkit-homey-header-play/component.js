@@ -5,6 +5,8 @@ var tmp 		= require('tmp');
 var request		= require('request');
 var archiver	= require('archiver');
 
+var tar = require('tar-fs')
+
 var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $project)
 {
 	
@@ -89,7 +91,7 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 		address = address || '127.0.0.1';
 		brk = brk || false;
 						
-		// create zip
+		// create archive
 		$scope.status = 'Creating archive...';
 		$scope.statusCode = 'zipping';
 		
@@ -102,6 +104,8 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 			});
 			
 			$scope.upload( tmppath, address, token, brk, function( err, response ){
+				
+				console.log('response', response)
 				
 				$scope.$apply(function(){
 					
@@ -165,24 +169,21 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 	
 		// create a temporary file
 		tmp.file(function(err, tmppath, fd, cleanupCallback) {
-						
-			var output = fs.createWriteStream(tmppath);
-			
-			output.on('close', function() {
-	    		callback( tmppath );
-			});
-			
-			var archive = archiver('zip');
-			
-			archive.on('error', function(err) {
-				throw err;
-			});
-			
-			archive.pipe(output);
-			
-			archive
-				.directory( app_path, '' )
-				.finalize();
+
+			tar
+				.pack(app_path, {
+					ignore: function(name) {
+						// ignore dotfiles (.git, .gitignore, .mysecretporncollection etc.)
+						return path.basename(name).charAt(0) === '.'
+					}
+				})
+				.pipe(
+					fs
+						.createWriteStream(tmppath)
+						.on('close', function(){
+							callback( tmppath );
+						})
+					);
 				
 		});
 	}
@@ -198,6 +199,7 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 		}, function( err, data, response ){
 			if( err ) return callback(err);
 			callback( null, JSON.parse(response) );
+			fs.unlink( tmppath );
 		});
 		
 		var form = $scope.request.form();
