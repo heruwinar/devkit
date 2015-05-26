@@ -229,11 +229,6 @@ tabs tab.changed .close:before {
 	font-size: 12px;
 }
 
-#login {
-	border-radius: 3px;
-	overflow: hidden;
-}
-
 noeditorview {
 	color: white;
 }

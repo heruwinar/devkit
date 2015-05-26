@@ -60,7 +60,6 @@ module.exports = function(grunt) {
 					 *	Include source files
 					 */
 					'./core/dependencies/**/*.js',
-					'./core/filters/**/*.js',
 					'./core/services/**/*.js',
 
 					/*
@@ -69,6 +68,7 @@ module.exports = function(grunt) {
 					'./core/app.js',
 					'./core/controllers/**/*.js',
 					'./core/directives/**/*.js',
+					'./core/filters/**/*.js',
 
 					/*
 					 *	Include app specific files

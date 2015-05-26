@@ -10,7 +10,7 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 	
 	$scope.debugUrl		= '';
 	
-	$scope.project		= false;	
+	$scope.project		= $project.getPath();	
 	$scope.playing 		= false;
 	$scope.uploading 	= false;
 	$scope.stopping 	= false;
@@ -26,12 +26,22 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 		if( !Array.isArray($rootScope.user.homeys) ) return;
 		
 		$scope.homey = $filter('filter')( $rootScope.user.homeys, { _id: $rootScope.activeHomey }, true )[0];
-		$scope.debugUrl = 'http://' + $scope.homey.ip_internal + '/manager/devkit/#/?token=' + $scope.homey.token;
+		
+		var debugUrl = 'http://' + $scope.homey.ip_internal + '/manager/devkit/#/?token=' + $scope.homey.token;
+		$scope.debugUrl = debugUrl;
 				
 	});
 	
+	/*
+	setInterval(function(){
+		console.log('$scope.project', $scope.project);
+		console.log('$scope.activeHomey', $scope.activeHomey);		
+	}, 500);
+	*/
+	
 	$rootScope.$on('menu.project-run', function(){
 		$scope.playpause();
+		
 		// TODO
 	});
 	
@@ -41,6 +51,20 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 	
 	$rootScope.$on('service.project.closed', function(){
 		$scope.project = false;
+	});
+	
+	$scope.popup = function(){
+		$popup.open('debug', $scope);
+	}
+	
+	$scope.popupOpen = false;
+	
+	$rootScope.$on('service.popup.open', function(){
+		$scope.popupOpen = true;
+	});
+	
+	$rootScope.$on('service.popup.close', function(){
+		$scope.popupOpen = false;
 	});
 	
 	$scope.playpause = function(){
@@ -54,16 +78,15 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 		//if( $scope.uploading ) return;
 			
 		if( $scope.playing ) {
-			$scope.stop( $scope.homey.ip_internal, 80, $scope.homey.token );
+			$scope.stop( $scope.homey.ip_internal, $scope.homey.token );
 		} else {
-			$scope.play( $scope.homey.ip_internal, 80, $scope.homey.token, false );
+			$scope.play( $scope.homey.ip_internal, $scope.homey.token, false );
 		}
 	}
 	
-	$scope.play = function( address, port, token, brk ) {
+	$scope.play = function( address, token, brk ) {
 		
 		address = address || '127.0.0.1';
-		port = port || 80;
 		brk = brk || false;
 						
 		// create zip
@@ -78,7 +101,7 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 				$scope.uploading = true;
 			});
 			
-			$scope.upload( tmppath, address, port, token, brk, function( err, response ){
+			$scope.upload( tmppath, address, token, brk, function( err, response ){
 				
 				$scope.$apply(function(){
 					
@@ -108,13 +131,12 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 	
 					// show logs
 					$popup.open('debug', $scope);
-//					logsEl.src = 'http://' + address + '/manager/devkit/#/?app=' + response.result.app_id;
 			    });				
 			});
 		});
 	}
 	
-	$scope.stop = function( address, port, token ){
+	$scope.stop = function( address, token ){
 		
 		$scope.stopping = true;
 		$scope.playing = false;
@@ -124,7 +146,7 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 		$popup.close();
 		
 		$scope.request = request.del({
-			url: 'http://' + address + ':' + port + '/api/manager/devkit/' + $scope.running_app,
+			url: 'http://' + address + '/api/manager/devkit/' + $scope.running_app,
 			headers: {
 	    		'Authorization': 'Bearer ' + token
 			}
@@ -165,11 +187,11 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 		});
 	}
 	
-	$scope.upload = function( tmppath, address, port, token, brk, callback ) {
+	$scope.upload = function( tmppath, address, token, brk, callback ) {
 							
 		// POST the tmp file to Homey
 		$scope.request = request.post({
-			url: 'http://' + address + ':' + port + '/api/manager/devkit/',
+			url: 'http://' + address + '/api/manager/devkit/',
 			headers: {
 	    		'Authorization': 'Bearer ' + token
 			}

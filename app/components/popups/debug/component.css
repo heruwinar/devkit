@@ -5,7 +5,7 @@
 	top: 40px;
 	bottom: 20px;
 	width: auto;
-	background: white;
+	background: transparent;
 }
 .popup-debug .ngdialog-content:before {
 	content: "";
@@ -27,4 +27,6 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
+	border-radius: 3px;
+	overflow: hidden;
 }
