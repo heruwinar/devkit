@@ -2,7 +2,7 @@
 	width: 400px;
 	height: 500px;
 	position: relative;
-	background: white;
+	background: transparent;
 }
 
 .popup-login iframe {
@@ -14,4 +14,6 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
+	border-radius: 3px;
+	overflow: hidden;
 }
