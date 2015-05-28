@@ -32,6 +32,14 @@ loadModule('custom_icons',	'theme',	'./app/components/themes/custom_icons/');
 loadModule('athom',			'theme',	'./app/components/themes/athom/');
 loadModule('font-awesome',	'theme',	'./app/components/themes/font-awesome/');
 
+// set codemirror options
+var codemirrorOpts = {
+	indentWithTabs: true,
+	indentUnit: 4
+}
+
+window.localStorage.codemirrorOpts = JSON.stringify(codemirrorOpts);
+
 /*
  * Use this area to define global settings for your app like the file editor config and devtools
  */

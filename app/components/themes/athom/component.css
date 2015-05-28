@@ -136,6 +136,9 @@ header {
 	border-right: none;
 	transition: none;
 }
+#filetree li[data-filename^="."] {
+	opacity: 0.5;
+}
 #filetree li .label:before {
 	content: "";
 	position: absolute;
