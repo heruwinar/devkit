@@ -22,7 +22,11 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 		$scope.user = $rootScope.user;
 	});
 	
-	$rootScope.$watch("activeHomey", function(){		
+	$rootScope.$watch("activeHomey", function(){	
+		$scope.updateActiveHomey();		
+	});
+	
+	$scope.updateActiveHomey = function(){	
 				
 		if( typeof $rootScope.user == 'undefined' ) return;
 		if( !Array.isArray($rootScope.user.homeys) ) return;
@@ -31,8 +35,8 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 		
 		var debugUrl = 'http://' + $scope.homey.ip_internal + '/manager/devkit/#/?token=' + $scope.homey.token;
 		$scope.debugUrl = debugUrl;
-				
-	});
+		
+	}
 	
 	/*
 	setInterval(function(){
@@ -70,6 +74,8 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 	});
 	
 	$scope.playpause = function(){
+			
+		$scope.updateActiveHomey();
 			
 		if( typeof $scope.homey == 'undefined' ) {
 			//alert('Please select a Homey first!');
