@@ -53,6 +53,7 @@ var EditorManifestController = function( $scope, $rootScope, $http, $q, $events,
 			manifest.permissions = manifest.permissions.filter(function(tag){ return tag; }).map(function(tag) { return tag.text; });
 			
 			manifest.speech.forEach(function( trigger ){
+				trigger.importance = parseFloat(trigger.importance);
 				for( var synonym_lang in trigger.synonyms ) {
 					var synonyms = trigger.synonyms[synonym_lang].filter(function(tag){ return tag; }).map(function(tag) { return tag.text; });
 					if( synonyms.length > 0 ) { 
