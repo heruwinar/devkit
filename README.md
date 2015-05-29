@@ -1,6 +1,6 @@
 # Homey Development Kit
 
-Create Homey apps with ease! If you're only looking to get the Development Kit, download a pre-built version from [https://developers.athom.nl]().
+Create Homey apps with ease! If you're only looking to get the Development Kit, download a pre-built version from [https://developers.athom.com](https://developers.athom.com).
 
 This repository is meant for development of the Development Kit itself.
 
