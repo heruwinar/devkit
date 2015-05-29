@@ -33,7 +33,7 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 		
 		$scope.homey = $filter('filter')( $rootScope.user.homeys, { _id: $rootScope.activeHomey }, true )[0];
 		
-		var debugUrl = 'http://' + $scope.homey.ip_internal + '/manager/devkit/#/?token=' + $scope.homey.token;
+		var debugUrl = 'http://' + $scope.homey.ip_internal + '/manager/devkit/?bearer_token=' + $scope.homey.token;
 		$scope.debugUrl = debugUrl;
 		
 	}
