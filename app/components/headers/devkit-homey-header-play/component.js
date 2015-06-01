@@ -1,11 +1,10 @@
-var fs		= require('fs');
-var path	= require('path');
+var fs			= require('fs');
+var path		= require('path');
+var zlib		= require('zlib');
 
 var tmp 		= require('tmp');
 var request		= require('request');
-var archiver	= require('archiver');
-
-var tar = require('tar-fs')
+var tar			= require('tar-fs');
 
 var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $project)
 {
@@ -173,16 +172,19 @@ var HeaderPlayController = function($scope, $rootScope, $filter, $popup, $projec
 	// functions for packing & uploading
 	$scope.pack = function( app_path, callback ){
 	
-		// create a temporary file
+		// create a temporary file (.tar)
 		tmp.file(function(err, tmppath, fd, cleanupCallback) {
+			
+			var tarOpts = {
+				ignore: function(name) {
+					// ignore dotfiles (.git, .gitignore, .mysecretporncollection etc.)
+					return path.basename(name).charAt(0) === '.'
+				}
+			};
 
 			tar
-				.pack(app_path, {
-					ignore: function(name) {
-						// ignore dotfiles (.git, .gitignore, .mysecretporncollection etc.)
-						return path.basename(name).charAt(0) === '.'
-					}
-				})
+				.pack(app_path, tarOpts)
+				.pipe( zlib.createGzip() )
 				.pipe(
 					fs
 						.createWriteStream(tmppath)
