@@ -12,10 +12,6 @@ var HeaderAuthController = function($scope, $rootScope, $http, $popup)
 		$rootScope.activeHomey = $scope.activeHomey;
 	});
 	
-	if(window.localStorage.user) {
-		$scope.user = JSON.parse(window.localStorage.user);
-	}
-	
 	$scope.changeActiveHomey = function( homey_id ){
 		window.localStorage.activeHomey = homey_id;
 		$scope.activeHomey = window.localStorage.activeHomey;
@@ -44,7 +40,6 @@ var HeaderAuthController = function($scope, $rootScope, $http, $popup)
 	$scope.logout = function() {
 		delete window.localStorage.access_token;
 		delete window.localStorage.refresh_token;
-		delete window.localStorage.user;
 		delete window.localStorage.activeHomey;
 		$scope.user = undefined;
 		$scope.activeHomey = undefined;
@@ -66,7 +61,6 @@ var HeaderAuthController = function($scope, $rootScope, $http, $popup)
 	    .then(function(result) {		    
 			if(result.status == 200) {
 				$scope.user = result.data;
-				window.localStorage.user = JSON.stringify(result.data);
 				
 				// set first Homey as active
 				if( result.data.homeys.length > 0 ) {
