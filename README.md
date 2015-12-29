@@ -1,3 +1,7 @@
+
+# Deprecation warning
+This software is deprecated as of 29-12-2015. Please visit [https://developers.athom.com](https://developers.athom.com) for new developer tools.
+
 # Homey Development Kit
 
 Create Homey apps with ease! If you're only looking to get the Development Kit, download a pre-built version from [https://developers.athom.com](https://developers.athom.com).
